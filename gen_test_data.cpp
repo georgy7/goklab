@@ -37,9 +37,9 @@ void process(int r, int g, int b) {
     Lab output = linear_srgb_to_oklab(input);
 
     RGB convertedBack = oklab_to_linear_srgb(output);
-    assert(abs(convertedBack.r - input.r) < 0.000001);
-    assert(abs(convertedBack.g - input.g) < 0.000001);
-    assert(abs(convertedBack.b - input.b) < 0.000001);
+    assert(abs(convertedBack.r - input.r) < 1e-10);
+    assert(abs(convertedBack.g - input.g) < 1e-10);
+    assert(abs(convertedBack.b - input.b) < 1e-10);
 
     printf("L: %e, a %e, b %e\n\n", output.L, output.a, output.b);
 }
