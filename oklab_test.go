@@ -5,7 +5,7 @@ import (
 	"testing"
 )
 
-const eps = 1e-5
+const eps = 0.0000011
 
 type testCase struct {
 	rgb RGB
@@ -99,6 +99,27 @@ func TestRgbToLab(t *testing.T) {
 
 		if math.Abs(float64(result.B-expected.B)) >= eps {
 			t.Fatalf("#%d b: %e != %e", i, result.B, expected.B)
+		}
+	}
+}
+
+func TestLabToRgb(t *testing.T) {
+	data := getData()
+	for i := 0; i < len(data); i++ {
+		input := data[i].lab
+		expected := data[i].rgb
+		result := OklabToLinearRgb(input)
+
+		if math.Abs(float64(result.R-expected.R)) >= eps {
+			t.Fatalf("#%d R: %e != %e", i, result.R, expected.R)
+		}
+
+		if math.Abs(float64(result.G-expected.G)) >= eps {
+			t.Fatalf("#%d G: %e != %e", i, result.G, expected.G)
+		}
+
+		if math.Abs(float64(result.B-expected.B)) >= eps {
+			t.Fatalf("#%d B: %e != %e", i, result.B, expected.B)
 		}
 	}
 }
