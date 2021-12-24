@@ -102,3 +102,12 @@ func TestRgbToLab(t *testing.T) {
 		}
 	}
 }
+
+func BenchmarkMath(b *testing.B) {
+	data := getData()
+	for i := 0; i < b.N; i++ {
+		input := data[i%len(data)].rgb
+		lab := LinearRgbToOklab(input)
+		_ = OklabToLinearRgb(lab)
+	}
+}
