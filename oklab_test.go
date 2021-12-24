@@ -5,7 +5,7 @@ import (
 	"testing"
 )
 
-const eps = 1e-6
+const eps = 1e-5
 
 type testCase struct {
 	rgb RGB
@@ -20,15 +20,15 @@ func getData() []testCase {
 		},
 		{
 			RGB{0.000000e+00, 1.000000e+00, 0.000000e+00},
-			Lab{8.664396e-01, -2.338876e-01, 1.794985e-01},
+			Lab{8.664396e-01, -2.338874e-01, 1.794985e-01},
 		},
 		{
 			RGB{0.000000e+00, 0.000000e+00, 1.000000e+00},
-			Lab{4.520137e-01, -3.245698e-02, -3.115281e-01},
+			Lab{4.520137e-01, -3.245696e-02, -3.115281e-01},
 		},
 		{
 			RGB{1.000000e+00, 1.000000e+00, 1.000000e+00},
-			Lab{1.000000e+00, 8.095286e-11, 3.727391e-08},
+			Lab{1.000000e+00, 0.000000e+00, 5.960464e-08},
 		},
 		{
 			RGB{0.000000e+00, 0.000000e+00, 0.000000e+00},
@@ -36,27 +36,27 @@ func getData() []testCase {
 		},
 		{
 			RGB{2.462013e-01, 6.583748e-01, 2.232280e-01},
-			Lab{8.002463e-01, -1.078114e-01, 8.255051e-02},
+			Lab{8.002464e-01, -1.078115e-01, 8.255047e-02},
 		},
 		{
 			RGB{1.000000e+00, 3.467041e-01, 3.954624e-02},
-			Lab{7.842250e-01, 7.268992e-02, 1.413031e-01},
+			Lab{7.842250e-01, 7.268986e-02, 1.413031e-01},
 		},
 		{
 			RGB{5.520114e-01, 5.149177e-01, 3.813260e-01},
-			Lab{7.999292e-01, -3.195469e-03, 3.335571e-02},
+			Lab{7.999293e-01, -3.195465e-03, 3.335571e-02},
 		},
 		{
 			RGB{1.000000e+00, 5.028865e-01, 1.000000e+00},
-			Lab{8.774487e-01, 9.605264e-02, -6.356862e-02},
+			Lab{8.774487e-01, 9.605274e-02, -6.356859e-02},
 		},
 		{
 			RGB{1.000000e+00, 6.048833e-03, 2.050787e-01},
-			Lab{6.477489e-01, 2.548900e-01, 1.702712e-02},
+			Lab{6.477489e-01, 2.548900e-01, 1.702711e-02},
 		},
 		{
 			RGB{1.000000e+00, 0.000000e+00, 7.036010e-02},
-			Lab{6.337077e-01, 2.412873e-01, 7.909187e-02},
+			Lab{6.337076e-01, 2.412873e-01, 7.909188e-02},
 		},
 	}
 }
@@ -68,15 +68,15 @@ func TestItIsReversible(t *testing.T) {
 		lab := LinearRgbToOklab(input)
 		result := OklabToLinearRgb(lab)
 
-		if math.Abs(result.R-input.R) >= eps {
+		if math.Abs(float64(result.R-input.R)) >= eps {
 			t.Fatalf("#%d R: %e != %e", i, result.R, input.R)
 		}
 
-		if math.Abs(result.G-input.G) >= eps {
+		if math.Abs(float64(result.G-input.G)) >= eps {
 			t.Fatalf("#%d G: %e != %e", i, result.G, input.G)
 		}
 
-		if math.Abs(result.B-input.B) >= eps {
+		if math.Abs(float64(result.B-input.B)) >= eps {
 			t.Fatalf("#%d B: %e != %e", i, result.B, input.B)
 		}
 	}
@@ -89,15 +89,15 @@ func TestRgbToLab(t *testing.T) {
 		expected := data[i].lab
 		result := LinearRgbToOklab(input)
 
-		if math.Abs(result.L-expected.L) >= eps {
+		if math.Abs(float64(result.L-expected.L)) >= eps {
 			t.Fatalf("#%d L: %e != %e", i, result.L, expected.L)
 		}
 
-		if math.Abs(result.A-expected.A) >= eps {
+		if math.Abs(float64(result.A-expected.A)) >= eps {
 			t.Fatalf("#%d a: %e != %e", i, result.A, expected.A)
 		}
 
-		if math.Abs(result.B-expected.B) >= eps {
+		if math.Abs(float64(result.B-expected.B)) >= eps {
 			t.Fatalf("#%d b: %e != %e", i, result.B, expected.B)
 		}
 	}

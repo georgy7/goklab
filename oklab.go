@@ -3,11 +3,11 @@ package goklab
 import "math"
 
 type RGB struct {
-	R, G, B float64
+	R, G, B float32
 }
 
 type Lab struct {
-	L, A, B float64
+	L, A, B float32
 }
 
 func LinearRgbToOklab(c RGB) Lab {
@@ -15,9 +15,9 @@ func LinearRgbToOklab(c RGB) Lab {
 	mdl := 0.2119034982*c.R + 0.6806995451*c.G + 0.1073969566*c.B
 	sht := 0.0883024619*c.R + 0.2817188376*c.G + 0.6299787005*c.B
 
-	lRoot := math.Cbrt(lng)
-	mRoot := math.Cbrt(mdl)
-	sRoot := math.Cbrt(sht)
+	lRoot := float32(math.Cbrt(float64(lng)))
+	mRoot := float32(math.Cbrt(float64(mdl)))
+	sRoot := float32(math.Cbrt(float64(sht)))
 
 	lt := 0.2104542553*lRoot + 0.7936177850*mRoot - 0.0040720468*sRoot
 	ca := 1.9779984951*lRoot - 2.4285922050*mRoot + 0.4505937099*sRoot
