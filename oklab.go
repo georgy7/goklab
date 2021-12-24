@@ -15,24 +15,24 @@ func LinearRgbToOklab(c RGB) Lab {
 	mdl := 0.2119034982*c.R + 0.6806995451*c.G + 0.1073969566*c.B
 	sht := 0.0883024619*c.R + 0.2817188376*c.G + 0.6299787005*c.B
 
-	lCbrt := math.Cbrt(lng)
-	mCbrt := math.Cbrt(mdl)
-	sCbrt := math.Cbrt(sht)
+	lRoot := math.Cbrt(lng)
+	mRoot := math.Cbrt(mdl)
+	sRoot := math.Cbrt(sht)
 
-	lt := 0.2104542553*lCbrt + 0.7936177850*mCbrt - 0.0040720468*sCbrt
-	ca := 1.9779984951*lCbrt - 2.4285922050*mCbrt + 0.4505937099*sCbrt
-	cb := 0.0259040371*lCbrt + 0.7827717662*mCbrt - 0.8086757660*sCbrt
+	lt := 0.2104542553*lRoot + 0.7936177850*mRoot - 0.0040720468*sRoot
+	ca := 1.9779984951*lRoot - 2.4285922050*mRoot + 0.4505937099*sRoot
+	cb := 0.0259040371*lRoot + 0.7827717662*mRoot - 0.8086757660*sRoot
 	return Lab{lt, ca, cb}
 }
 
 func OklabToLinearRgb(c Lab) RGB {
-	lCbrt := c.L + 0.3963377774*c.A + 0.2158037573*c.B
-	mCbrt := c.L - 0.1055613458*c.A - 0.0638541728*c.B
-	sCbrt := c.L - 0.0894841775*c.A - 1.2914855480*c.B
+	lRoot := c.L + 0.3963377774*c.A + 0.2158037573*c.B
+	mRoot := c.L - 0.1055613458*c.A - 0.0638541728*c.B
+	sRoot := c.L - 0.0894841775*c.A - 1.2914855480*c.B
 
-	long := lCbrt * lCbrt * lCbrt
-	middle := mCbrt * mCbrt * mCbrt
-	short := sCbrt * sCbrt * sCbrt
+	long := lRoot * lRoot * lRoot
+	middle := mRoot * mRoot * mRoot
+	short := sRoot * sRoot * sRoot
 
 	rd := +4.0767416621*long - 3.3077115913*middle + 0.2309699292*short
 	gr := -1.2684380046*long + 2.6097574011*middle - 0.3413193965*short
