@@ -1,4 +1,4 @@
-package goklab
+package oklab
 
 import (
 	"math"
