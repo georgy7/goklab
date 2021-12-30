@@ -5,7 +5,7 @@ import (
 	"testing"
 )
 
-const eps = 0.0000011
+const eps = 0.000001
 
 type testCase struct {
 	rgb RGB
@@ -124,6 +124,53 @@ func TestIntegerSrgbReversible(t *testing.T) {
 		rr := int(math.Round(255.0 * toSRGB(float64(output.R))))
 		rg := int(math.Round(255.0 * toSRGB(float64(output.G))))
 		rb := int(math.Round(255.0 * toSRGB(float64(output.B))))
+
+		if (rr != r) || (rg != g) || (rb != b) {
+			t.Fatalf("Input: %d %d %d. Output: %d %d %d.",
+				r, g, b, rr, rg, rb)
+		}
+	}
+
+	if (math.Abs(minR) >= eps) ||
+		(math.Abs(minG) >= eps) ||
+		(math.Abs(minB) >= eps) ||
+		(math.Abs(maxR-255.0) >= eps) ||
+		(math.Abs(maxG-255.0) >= eps) ||
+		(math.Abs(maxB-255.0) >= eps) {
+		t.Fatalf("This test is broken. MinRGB: %f %f %f. MaxRGB: %f %f %f.",
+			minR, minG, minB, maxR, maxG, maxB)
+	}
+}
+
+func TestIntegerSrgbReversibleSimple(t *testing.T) {
+	minR, maxR := 128.0, 128.0
+	minG, maxG := 128.0, 128.0
+	minB, maxB := 128.0, 128.0
+
+	for i := 0x0; i <= 0xFF_FF_FF; i++ {
+		r := i >> 16
+		g := (i % 0x1_00_00) >> 8
+		b := i % 0x1_00
+
+		minR, maxR = math.Min(minR, float64(r)), math.Max(maxR, float64(r))
+		minG, maxG = math.Min(minG, float64(g)), math.Max(maxG, float64(g))
+		minB, maxB = math.Min(minB, float64(b)), math.Max(maxB, float64(b))
+
+		input := RGB{
+			float32(math.Pow(float64(r)/255.0, 2.2)),
+			float32(math.Pow(float64(g)/255.0, 2.2)),
+			float32(math.Pow(float64(b)/255.0, 2.2))}
+
+		output := OklabToLinearRgb(LinearRgbToOklab(input))
+
+		toRgbSimple := func(c float32) int {
+			cf64 := math.Max(0, float64(c))
+			return int(math.Round(255.0 * math.Pow(cf64, 1.0/2.2)))
+		}
+
+		rr := toRgbSimple(output.R)
+		rg := toRgbSimple(output.G)
+		rb := toRgbSimple(output.B)
 
 		if (rr != r) || (rg != g) || (rb != b) {
 			t.Fatalf("Input: %d %d %d. Output: %d %d %d.",
