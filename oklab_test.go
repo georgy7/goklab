@@ -142,7 +142,7 @@ func TestIntegerSrgbReversible(t *testing.T) {
 	}
 }
 
-func TestIntegerSrgbReversibleSimple(t *testing.T) {
+func TestIntegerSrgbReversibleApproximateConversion(t *testing.T) {
 	minR, maxR := 128.0, 128.0
 	minG, maxG := 128.0, 128.0
 	minB, maxB := 128.0, 128.0
